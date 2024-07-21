@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 // const path = require("node:path");
 
 class AppWindow extends BrowserWindow {
@@ -12,7 +12,7 @@ class AppWindow extends BrowserWindow {
         nodeIntegration: true,
         contextIsolation: false,
       },
-      show: false
+      show: false,
     };
     // const finalConfig = Object.assign(basicConfig, config);
     const finalConfig = { ...basicConfig, ...config };
@@ -44,6 +44,17 @@ const createWindow = () => {
       },
       "./renderer/add.html"
     );
+  });
+  ipcMain.on("open-music-file", () => {
+    console.log("111");
+    dialog
+      .showOpenDialog({
+        filters: [{ name: "Music", extensions: ["mp3"] }],
+        properties: ["openFile", "multiSelections"],
+      })
+      .then((files) => {
+        console.log(files);
+      });
   });
 };
 
