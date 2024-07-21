@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>本地播放器</title>
+    <title>Electron 音乐播放器</title>
     <link
       rel="stylesheet"
       href="../node_modules/bootstrap/dist/css/bootstrap.min.css"
@@ -12,12 +12,17 @@
     <div class="container mt-4">
       <h1>我的播放器</h1>
       <div class="d-grid gap-2">
-        <button class="btn btn-primary mt-4" type="button">添加歌曲到曲库</button>
+        <button
+          id="add-music-button"
+          class="btn btn-primary mt-4"
+          type="button"
+        >
+          添加歌曲到曲库
+        </button>
       </div>
     </div>
     <script>
-      // 可以使用 nodejs 的方式
-      require("./renderer.js");
+      require("./index.js");
     </script>
   </body>
 </html>
