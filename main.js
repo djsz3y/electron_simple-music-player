@@ -1,37 +1,49 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 // const path = require("node:path");
 
+class AppWindow extends BrowserWindow {
+  constructor(config, fileLocation) {
+    const basicConfig = {
+      width: 800,
+      height: 600,
+      webPreferences: {
+        // // 为了访问渲染器中的Node.js的某些功能，我们在 BrowserWindow 的构造函数上附加了一个预加载脚本。
+        //   preload: path.join(__dirname, "preload.js"),
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
+      show: false
+    };
+    // const finalConfig = Object.assign(basicConfig, config);
+    const finalConfig = { ...basicConfig, ...config };
+    super(finalConfig);
+
+    // 加载 index.html
+    this.loadFile(fileLocation);
+
+    // 优雅地显示窗口
+    this.once("ready-to-show", () => {
+      this.show();
+    });
+  }
+}
+
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      // // 为了访问渲染器中的Node.js的某些功能，我们在 BrowserWindow 的构造函数上附加了一个预加载脚本。
-      //   preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  });
-
-  // 加载 index.html
-  mainWindow.loadFile("./renderer/index.html");
+  const mainWindow = new AppWindow({}, "./renderer/index.html");
 
   // 打开开发工具
   // mainWindow.webContents.openDevTools()
 
   ipcMain.on("add-music-window", () => {
-    console.log("hello from index page");
-    const addWindow = new BrowserWindow({
-      width: 500,
-      height: 400,
-      webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
+    const addWindow = new AppWindow(
+      {
+        width: 500,
+        height: 400,
+        parent: mainWindow,
       },
-      parent: mainWindow,
-    });
-    addWindow.loadFile("./renderer/add.html");
+      "./renderer/add.html"
+    );
   });
 };
 
