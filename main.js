@@ -28,7 +28,11 @@ class AppWindow extends BrowserWindow {
   }
 }
 
-const createWindow = () => {
+const createWindow = () => {};
+
+app.on("ready", () => {
+  // createWindow();
+
   // Create the browser window.
   const mainWindow = new AppWindow({}, "./renderer/index.html");
 
@@ -45,21 +49,20 @@ const createWindow = () => {
       "./renderer/add.html"
     );
   });
-  ipcMain.on("open-music-file", () => {
-    console.log("111");
+  ipcMain.on("open-music-file", (event) => {
     dialog
       .showOpenDialog({
         filters: [{ name: "Music", extensions: ["mp3"] }],
         properties: ["openFile", "multiSelections"],
       })
       .then((files) => {
-        console.log(files);
+        if (files && files.filePaths) {
+          // 没有 event.sender.send 方法！
+          // event.sender.send("selected-file", files.filePaths);
+          event.reply("selected-file", files.filePaths);
+        }
       });
   });
-};
-
-app.on("ready", () => {
-  createWindow();
 });
 
 // // 这段程序将会在 Electron 结束初始化
