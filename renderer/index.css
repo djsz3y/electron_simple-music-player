@@ -1,0 +1,9 @@
+#tracksList .col-2 .fas:hover {
+  cursor: pointer;
+}
+#tracksList .col-2 .fas,
+#tracksList .col-2 .fas::before {
+  text-align: center;
+  display: inline-block;
+  width: 16px;
+}
