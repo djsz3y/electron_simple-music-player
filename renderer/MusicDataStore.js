@@ -1,22 +1,29 @@
-const Store = require("electron-store");
-const uuidv4 = require("uuid/v4");
+const uuidv4 = require("uuid").v4;
 const path = require("path");
 
-class DataStore extends Store {
-  constructor(settings) {
-    super(settings);
+class DataStore {
+  constructor(store) {
+    (async () => {
+      // // 继承 Store
+      // const { default: Store } = await import("electron-store");
+      // Object.setPrototypeOf(this, new Store(settings));
+      
+      this.store = store;
 
-    // 1.保存所有音乐文件的信息
-    this.tracks = this.get("tracks") || [];
+      // super(settings);
+
+      // 1.保存所有音乐文件的信息
+      this.tracks = this.store.get("tracks") || [];
+    })();
   }
   // 2.保存音乐文件的数据
   saveTracks() {
-    this.set("tracks", this.tracks);
+    this.store.set("tracks", this.tracks);
     return this;
   }
   // 3.获取音乐信息
   getTracks() {
-    return this.get("tracks") || [];
+    return this.store.get("tracks") || [];
   }
   /**
    * 4.功能：音乐信息/track信息添加到数据当中去
@@ -48,5 +55,11 @@ class DataStore extends Store {
   }
 }
 
-// 11.最后导出
-module.exports = DataStore;
+// 11.创建 DataStore 实例的工厂函数
+async function createDataStore(settings) {
+  const { default: Store } = await import('electron-store');
+  const store = new Store(settings);
+  return new DataStore(store);
+}
+
+module.exports = createDataStore;
