@@ -3,6 +3,8 @@ const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 
 const createDataStore = require("./renderer/MusicDataStore");
 
+let myStore; // 异步获取
+
 class AppWindow extends BrowserWindow {
   constructor(config, fileLocation) {
     const basicConfig = {
@@ -38,6 +40,11 @@ app.on("ready", () => {
   // Create the browser window.
   const mainWindow = new AppWindow({}, "./renderer/index.html");
 
+  mainWindow.webContents.on("did-finish-load", () => {
+    console.log("page did finish load");
+    mainWindow.send("getTracks", myStore.getTracks());
+  });
+
   // 打开开发工具
   // mainWindow.webContents.openDevTools()
 
@@ -53,12 +60,14 @@ app.on("ready", () => {
   });
 
   (async () => {
-    const myStore = await createDataStore({ name: "Music Data" });
+    // 异步导入的方式，存储在全局变量中。
+    myStore = await createDataStore({ name: "Music Data" });
     // console.log(myStore.getTracks());
 
     ipcMain.on("add-tracks", (event, tracks) => {
+      // updatedTracks 更新以后的 tracks
       const updatedTracks = myStore.addTracks(tracks).getTracks();
-      console.log(81, updatedTracks);
+      mainWindow.send("getTracks", updatedTracks);
     });
   })();
 
