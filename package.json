@@ -1,17 +1,59 @@
 {
   "name": "simple-music-player",
   "version": "1.0.0",
-  "description": "",
+  "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch main.js --exec electron ."
+    "start": "nodemon --watch main.js --exec electron .",
+    "clean": "rimraf dist",
+    "dist": "node build/build.js"
   },
-  "author": "",
+  "build": {
+    "appId": "simpleMusicPlayer",
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "dmg": {
+      "background": "build/appdmg.png",
+      "icon": "build/icon.icns",
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 380,
+          "y": 280,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 110,
+          "y": 280,
+          "type": "file"
+        }
+      ],
+      "window": {
+        "width": 500,
+        "height": 500
+      }
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "build/icon.ico"
+    }
+  },
+  "repository": "https://github.com/djsz3y/simple-music-player",
+  "author": "electron-music-player",
   "license": "MIT",
   "devDependencies": {
     "electron": "^31.2.1",
-    "nodemon": "^3.1.4"
+    "electron-builder": "^24.13.3",
+    "nodemon": "^3.1.4",
+    "rimraf": "^6.0.1"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
