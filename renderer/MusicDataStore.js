@@ -7,7 +7,7 @@ class DataStore {
       // // 继承 Store
       // const { default: Store } = await import("electron-store");
       // Object.setPrototypeOf(this, new Store(settings));
-      
+
       this.store = store;
 
       // super(settings);
@@ -53,11 +53,15 @@ class DataStore {
     this.tracks = [...this.tracks, ...tracksWithProps]; // 10.原来的 tracks 和新的 tracks 就是新的曲库
     return this.saveTracks();
   }
+  deleteTrack(deletedId) {
+    this.tracks = this.tracks.filter((item) => item.id !== deletedId);
+    return this.saveTracks();
+  }
 }
 
 // 11.创建 DataStore 实例的工厂函数
 async function createDataStore(settings) {
-  const { default: Store } = await import('electron-store');
+  const { default: Store } = await import("electron-store");
   const store = new Store(settings);
   return new DataStore(store);
 }

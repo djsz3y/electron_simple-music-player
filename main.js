@@ -71,6 +71,12 @@ app.on("ready", () => {
     });
   })();
 
+  ipcMain.on("delete-track", (event, id) => {
+    // store 中调用 deleteTrack 方法，然后 send 回去。
+    const updatedTracks = myStore.deleteTrack(id).getTracks();
+    mainWindow.send("getTracks", updatedTracks);
+  });
+
   ipcMain.on("open-music-file", (event) => {
     dialog
       .showOpenDialog({
