@@ -30,10 +30,41 @@ const renderListHTML = (tracks) => {
     ? `<ul class="list-group">${tracksListHTML}</ul>`
     : emptyTrackHTML;
 };
+
+/**
+ *
+ * @param {*} name 歌曲名称
+ * @param {*} duration 歌曲长度
+ */
+const renderPlayerHTML = (name, duration) => {
+  const player = $("player-status");
+  const html = `<div class="col font-weight-bold">
+                  正在播放：${name}
+                </div>
+                <div class="col">
+                  <span id="current-seeker">00:00</span> / ${duration}
+                </div>`;
+  player.innerHTML = html;
+};
+const updateProgressHTML = (currentTime) => {
+  const seeker = $("current-seeker");
+  seeker.innerHTML = currentTime;
+};
 ipcRenderer.on("getTracks", (event, tracks) => {
   console.log("receive tracks", tracks);
   allTracks = tracks;
   renderListHTML(tracks);
+});
+
+// 添加 loadedmetadata 事件： loadedmetadata 以后，渲染播放器的状态。
+musicAudio.addEventListener("loadedmetadata", () => {
+  // 渲染播放器状态
+  renderPlayerHTML(currentTrack.fileName, musicAudio.duration);
+});
+
+musicAudio.addEventListener("timeupdate", () => {
+  // 更新播放器状态
+  updateProgressHTML(musicAudio.currentTime);
 });
 
 $("tracksList").addEventListener("click", (event) => {
