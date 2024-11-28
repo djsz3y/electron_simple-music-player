@@ -185,11 +185,11 @@ We are using Node.js 20.15.0, Chromium 126.0.6478.127, and Electron 31.2.1.
 
 - 一个 Main Process，类似任务管理器里的 Google Chrome 主进程和 Google Chrome Helper
 
-<img src="./imgs/1721280669125.png" alt="Google Chrome" />
+<img src="./imgs/2-1_1_Chromium_GoogleChrome_GCHelper.png" alt="Google Chrome" />
 
 【3】Electron 的资源管理器
 
-<img src="./imgs/1721280781226.png" alt="Electron" />
+<img src="./imgs/2-1_2_Electron_ElectronHelper.png" alt="Electron" />
 
 Chromium 和 Electron 一样，运行产生多个进程。
 
@@ -401,7 +401,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 ##### [4]为什么要在进程之间通信？（每个进程在小岛上为什么要沟通？）
 
-<img src="./imgs/1721476839132.png">
+<img src="./imgs/2-3_为什么要在进程之间通信.png">
 
 Main Process 有操作某些特定 API 的能力，在主进程完成某些操作时，需要通知 Renderer Process 进行对应的操作，比如界面更新；
 
@@ -671,7 +671,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 #### 【1】功能流程
 
-<img src="./imgs/流程图-Electron-music-player.png" />
+<img src="./imgs/3-2_流程图-添加音乐的整个流程.png" />
 
 #### 【2】分析
 
@@ -885,7 +885,7 @@ class AppWindow extends BrowserWindow {
 
 现在做黄色区域的功能：
 
-<img src="./imgs/流程图-Electron-music-player-4-4.png" />
+<img src="./imgs/4-4_流程图-Dialog模块添加音乐文件-原型图-黄色功能.png" />
 
 【2】代码
 
@@ -1709,7 +1709,7 @@ $("tracksList").addEventListener("click", (event) => {
 
 > 现在演示如何处理这个问题：
 
-<img src="./imgs/流程图-Electron-music-player-5-5.png" />
+<img src="./imgs/5-5_流程图-主窗口播放音乐-梳理代码思路.png" />
 
 #### 【2】然后编写**伪代码和注释**：
 
