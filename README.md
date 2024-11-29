@@ -1,4 +1,4 @@
-# Electron 入门-开发本地音乐播放器
+# 基于 Electron 的本地音乐播放器
 
 ## 第一章：进入 Electron 的世界
 
